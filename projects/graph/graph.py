@@ -52,7 +52,8 @@ class Graph:
             # if not visited:
             if v not in visited:
                 # Visit the node (print it out)
-                print(f" The visited node using BFT: {v}")
+                # print(f" The visited node using BFT: {v}")
+                print(v)
 
                 # Add it to the visited set
                 visited.add(v)
@@ -84,7 +85,8 @@ class Graph:
             # if not visited:
             if v not in visited:
                 # Visit the node (print it out)
-                print(f" The visited node using DFT: {v}")
+                # print(f" The visited node using DFT: {v}")
+                print(v)
 
                 # Add it to the visited set
                 visited.add(v)
@@ -106,7 +108,8 @@ class Graph:
             visited = set()
             
         visited.add(starting_vertex)
-        print(f" these are starting vertices, the dft_recursive way: {starting_vertex}")
+        # print(f" these are starting vertices, the dft_recursive way: {starting_vertex}")
+        print(starting_vertex)
         
         # saving current node neighbor to a variable name neighbors
         neighbors = self.get_neighbors(starting_vertex)
@@ -128,18 +131,35 @@ class Graph:
         breath-first order.
         """
         # Create an empty queue and enqueue A PATH TO the starting vertex ID
+        queue_before_search = Queue()
+        queue_before_search.enqueue([starting_vertex])
         
         # Create a Set to store visited vertices
+        visited = set()
         # While the queue is not empty...
+        while queue_before_search.size() > 0:
             # Dequeue the first PATH
+            current_path = queue_before_search.dequeue()
             # Grab the last vertex from the PATH
+            last_vertex = current_path[-1]
             # If that vertex has not been visited...
+            if last_vertex not in visited:
                 # CHECK IF IT'S THE TARGET
-                # IF SO, RETURN PATH
-                # Mark it as visited...
-                # Then add A PATH TO its neighbors to the back of the queue
-                # COPY THE PATH
-                # APPEND THE NEIGHBOR TO THE BACK
+                if last_vertex == destination_vertex:
+                    # IF SO, RETURN PATH
+                    return current_path
+                # if it is not teh target
+                else:
+                    # Mark it as visited...
+                    visited.add(last_vertex)
+                    # Then add A PATH TO its neighbors to the back of the queue
+                    for node in self.get_neighbors(last_vertex):
+                        # COPY THE PATH
+                        copy_current_path = current_path[:]
+                        # APPEND THE NEIGHBOR TO THE BACK
+                        copy_current_path.append(node)
+                        # and add copied current path to the queue
+                        queue_before_search.enqueue(copy_current_path)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -147,7 +167,36 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        # Create an empty queue and enqueue A PATH TO the starting vertex ID
+        queue_before_search = Stack()
+        queue_before_search.push([starting_vertex])
+        
+        # Create a Set to store visited vertices
+        visited = set()
+        # While the queue is not empty...
+        while queue_before_search.size() > 0:
+            # Dequeue the first PATH
+            current_path = queue_before_search.pop()
+            # Grab the last vertex from the PATH
+            last_vertex = current_path[-1]
+            # If that vertex has not been visited...
+            if last_vertex not in visited:
+                # CHECK IF IT'S THE TARGET
+                if last_vertex == destination_vertex:
+                    # IF SO, RETURN PATH
+                    return current_path
+                # if it is not teh target
+                else:
+                    # Mark it as visited...
+                    visited.add(last_vertex)
+                    # Then add A PATH TO its neighbors to the back of the queue
+                    for node in self.get_neighbors(last_vertex):
+                        # COPY THE PATH
+                        copy_current_path = current_path[:]
+                        # APPEND THE NEIGHBOR TO THE BACK
+                        copy_current_path.append(node)
+                        # and add copied current path to the queue
+                        queue_before_search.push(copy_current_path)
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
